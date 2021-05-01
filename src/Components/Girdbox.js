@@ -2,8 +2,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-//Global data
+//Global Cards Data
 import Globaldata from './Globaldata'
+//Country Picker List
+import CountryPicker from './CountryPicker';
+//display chart data
+import Mychart from './chart'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +36,12 @@ export default function Girdbox() {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={8}>
-          <Paper className={classes.paper}>Country Data</Paper>
+          <Paper className={classes.paper}>
+            <CountryPicker />
+          </Paper>
+          <Paper className={classes.paper}>
+            <Mychart />
+          </Paper>
         </Grid>
       </Grid>
     </div>
