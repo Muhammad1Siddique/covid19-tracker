@@ -59,7 +59,7 @@ function CountryPicker(){
                 </Grid>
                 <Grid item xs={12} sm={8}>
                 <Paper className={classes.paper}>
-                    <h2>{ccdata && ccdata[index].country} Covid19 Status</h2>
+                    <h2>Covid19 {ccdata && ccdata[index].country} Status</h2>
                     <CountryChart val={index} />
                 </Paper>
                 </Grid>
