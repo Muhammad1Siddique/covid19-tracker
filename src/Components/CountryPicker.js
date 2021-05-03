@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 function CountryPicker(){
 
 
-    const [ccdata, setcdata] = useState([])
+    const [ccdata, setcdata] = useState([]);
     //    const [cload, csetload] = useState([false])
     useEffect(() => {
         async function fetchcdata() {
@@ -59,7 +59,7 @@ function CountryPicker(){
                 </Grid>
                 <Grid item xs={12} sm={8}>
                 <Paper className={classes.paper}>
-                    <h2>Covid19 {ccdata && ccdata[index].country} Status</h2>
+                    <h2>Country Covid19 Status</h2>
                     <CountryChart val={index} />
                 </Paper>
                 </Grid>
