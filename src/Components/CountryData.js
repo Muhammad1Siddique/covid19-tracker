@@ -27,17 +27,17 @@ const useTypo = makeStyles({
     paddingTop: 50,
   },
 });
-export default function Globaldata() {
-  const [globalCases, setGlobalCases] = useState();
+export default function CountryData({val}) {
+  const [countryCases, setCountryCases] = useState();
   const [dataLoading, setDataLoading] = useState(false);
   
   
   useEffect( ()=> {
     async function fetchGlobalCases(){
       setDataLoading(true);
-      const apiResponse = await fetch("https://corona.lmao.ninja/v2/all");
-      const dataFromApi = await apiResponse.json();
-      setGlobalCases(dataFromApi);
+      const apiCountryRes = await fetch("https://disease.sh/v3/covid-19/countries");
+      const CountryFromApi = await apiCountryRes.json();
+      setCountryCases(CountryFromApi);
       setDataLoading(false);
     }
     fetchGlobalCases();
@@ -54,7 +54,7 @@ export default function Globaldata() {
         {loading}
       </Typography>
       <Typography className={typoClasses.root} variant="subtitle1" gutterBottom>
-        Global Cases
+        Total Cases
       </Typography>
           
       </Paper>
@@ -91,16 +91,16 @@ export default function Globaldata() {
     <div className={classes.root}>
       <Paper elevation={3}>
       <Typography className={typoClasses.root} variant="h4" gutterBottom style={{color:'black'}}> 
-       <NumberFormat value={globalCases && globalCases.cases} displayType={'text'} thousandSeparator={true} />
+       <NumberFormat value={countryCases && countryCases[val].cases} displayType={'text'} thousandSeparator={true} />
       </Typography>
       <Typography className={typoClasses.root} variant="subtitle1" gutterBottom>
-        Global Cases
+        Total Cases
       </Typography>
           
       </Paper>
       <Paper elevation={3}>
       <Typography className={typoClasses.root} variant="h4" gutterBottom style={{color:'orange'}}>
-        <NumberFormat value={globalCases && globalCases.active} displayType={'text'} thousandSeparator={true} />
+        <NumberFormat value={countryCases && countryCases[val].active} displayType={'text'} thousandSeparator={true} />
       </Typography>
       <Typography className={typoClasses.root} variant="subtitle1" gutterBottom>
         Active Cases
@@ -108,7 +108,7 @@ export default function Globaldata() {
       </Paper>
       <Paper elevation={3}>
       <Typography className={typoClasses.root} variant="h4" gutterBottom style={{color:'seagreen'}}>
-        <NumberFormat value={globalCases && globalCases.recovered} displayType={'text'} thousandSeparator={true} />
+        <NumberFormat value={countryCases && countryCases[val].recovered} displayType={'text'} thousandSeparator={true} />
       </Typography>
       <Typography className={typoClasses.root} variant="subtitle1" gutterBottom>
         Recovered Cases
@@ -116,7 +116,7 @@ export default function Globaldata() {
       </Paper>
       <Paper elevation={3}>
       <Typography className={typoClasses.root} variant="h4" gutterBottom style={{color:'red'}}>
-       <NumberFormat value={globalCases && globalCases.deaths} displayType={'text'} thousandSeparator={true} />
+       <NumberFormat value={countryCases && countryCases[val].deaths} displayType={'text'} thousandSeparator={true} />
       </Typography>
       <Typography className={typoClasses.root} variant="subtitle1" gutterBottom>
         Fatalities

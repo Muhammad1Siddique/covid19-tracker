@@ -1,26 +1,29 @@
-import React, { useEffect,useState } from 'react';
-import {Bar} from 'react-chartjs-2';
+import React,{useState,useEffect} from 'react';
+import {Bar} from 'react-chartjs-2'
 
 
-export default function Mychart(){
-  const [resCharts, setResCharts] = useState();
-  
-  useEffect(()=>{
-    async function fetchGlobal(){
-      const apiResult = await fetch("https://corona.lmao.ninja/v2/all");
-      const apiResultData = await apiResult.json();
-      setResCharts(apiResultData);
+export default function CountryChart({val}) {
+
+const [data,setdata] = useState();
+useEffect(()=>{
+    async function fetchData(){
+        const apiresponse =await fetch('https://disease.sh/v3/covid-19/countries');
+        const apidata =await apiresponse.json();
+        setdata(apidata);
     }
-    fetchGlobal();
-  },[])
-    return(
-      <div>
+    fetchData()
+
+},[])
+ 
+
+    return (
+        <div>
         <Bar 
           data={{
-            labels: ['Covid19 WOrld Global Status'],
+            labels: ['Covid19 Country Status'],
             datasets:[{
-              label: 'Global Cases',
-              data: [resCharts && resCharts.cases],
+              label: 'Total Cases',
+              data: [data && data[val].cases],
               backgroundColor:[
                 'gray',
               ],
@@ -31,7 +34,7 @@ export default function Mychart(){
             },
             {
               label: 'Active Cases',
-              data: [resCharts && resCharts.active],
+              data: [data && data[val].active],
               backgroundColor:[
                 'orange',
                 ],
@@ -42,7 +45,7 @@ export default function Mychart(){
             },
             {
               label: 'Recovered Cases',
-              data: [resCharts && resCharts.recovered],
+              data: [data && data[val].recovered],
               backgroundColor:[
                 'seagreen',
               ],
@@ -53,7 +56,7 @@ export default function Mychart(){
             },
             {
               label: 'Fatalities',
-              data: [resCharts && resCharts.deaths],
+              data: [data && data[val].deaths],
               backgroundColor:[
                 'red',
               ],
@@ -80,5 +83,5 @@ export default function Mychart(){
           }}
         />
       </div>
-    )
-  }
+    );
+}

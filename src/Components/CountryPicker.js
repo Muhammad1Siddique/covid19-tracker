@@ -1,85 +1,71 @@
-import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
-
+import React, { useState, useEffect } from 'react'
+import NativeSelect from '@material-ui/core/NativeSelect';
+import CountryChart from './CountryChart';
+import CountryData from './CountryData';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: '100%',
-  },
-  noLabel: {
-    marginTop: theme.spacing(3),
-  },
-}));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+    root: {
+      flexGrow: 1,
+      maxWidth: 1170,
+      margin: '0 auto',
+      marginTop: 50,
     },
-  },
-};
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
 
-const names = [
-  'Pakistan',
-  'China',
-  'Turkey',
-  'Iran',
-  'Qater',
-  'United Kingdom',
-  'Russa',
-  'Iraq',
-  'Malasia',
-  'Maldivies',
-];
 
-function getStyles(name, countryName, theme) {
-  return {
-    fontWeight:
-      countryName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
+function CountryPicker(){
+
+
+    const [ccdata, setcdata] = useState([])
+    //    const [cload, csetload] = useState([false])
+    useEffect(() => {
+        async function fetchcdata() {
+            //          csetload(true);
+            const cresponse = await fetch('https://disease.sh/v3/covid-19/countries');
+            const cdata = await cresponse.json();
+        //    console.log(cdata);
+            setcdata(cdata);
+            //  csetload(false);
+        } fetchcdata();
+    }, [])
+
+    const classes = useStyles();
+    let cc;
+    let [index, setIndex] = useState(0);
+
+    return (
+        <div lassName={classes.root}>
+            <br></br>
+            <NativeSelect id="select" onChange={(e) =>{ cc=e.target.value;
+            index = ccdata.findIndex(x=>x.country===cc);
+                setIndex(index);
+            }}>
+                {ccdata && ccdata.map(({ country }, index) => <option key={index} value={country}>{country}</option>)}
+            </NativeSelect>
+            <br></br><br></br><br></br>
+            <Grid container spacing={3}>
+                <Grid item xs={12} sm={4}>
+                <Paper className={classes.paper}>
+                    <CountryData val={index}/>
+                </Paper>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                <Paper className={classes.paper}>
+                    <h2>{ccdata && ccdata[index].country} Covid19 Status</h2>
+                    <CountryChart val={index} />
+                </Paper>
+                </Grid>
+            </Grid>
+            
+        </div>
+    )
 }
-
-export default function CountryPicker() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [countryName, setCountryName] = React.useState([]);
-
-  const handleChange = (event) => {
-    setCountryName(event.target.value);
-  };
-
-  return (
-    <div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-name-label">Countries List</InputLabel>
-        <Select
-          labelId="demo-mutiple-name-label"
-          id="demo-mutiple-name"
-          value={countryName}
-          onChange={handleChange}
-          input={<Input />}
-          MenuProps={MenuProps}
-        >
-          {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, countryName, theme)}>
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-     
-    </div>
-  );
-}
+export default CountryPicker;

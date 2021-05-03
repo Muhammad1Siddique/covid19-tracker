@@ -37,13 +37,19 @@ export default function Girdbox() {
         </Grid>
         <Grid item xs={12} sm={8}>
           <Paper className={classes.paper}>
-            <CountryPicker />
-          </Paper>
-          <Paper className={classes.paper}>
+            <h2>Global Covid19 Status</h2>
             <Mychart />
           </Paper>
         </Grid>
       </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>
+            <CountryPicker />
+          </Paper>    
+        </Grid>
+      </Grid>
+      
     </div>
   );
 }
